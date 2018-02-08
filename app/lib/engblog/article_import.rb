@@ -18,7 +18,11 @@ module Engblog
         Article.create!(
           title: row['title'],
           body: row['body'],
-          author: author
+          author: author,
+          hero_image_name: row['hero image']
+        )
+        HeroImage.create!(
+          name: row['hero image']
         )
       end
     end
