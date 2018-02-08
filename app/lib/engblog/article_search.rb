@@ -8,7 +8,7 @@ module Engblog
     end
 
     def call
-      Article.where(title_match).pluck(:id)
+      Article.where(title_match.or(body_match)).pluck(:id)
     end
 
     private
@@ -17,6 +17,10 @@ module Engblog
 
     def title_match
       @title_match ||= Article.arel_table[:title].matches(wildcard_query)
+    end
+
+    def body_match
+      @body_match ||= Article.arel_table[:body].matches(wildcard_query)
     end
 
     def wildcard_query

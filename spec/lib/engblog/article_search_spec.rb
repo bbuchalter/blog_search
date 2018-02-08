@@ -9,16 +9,29 @@ describe Engblog::ArticleSearch do
     context "when many articles exist" do
       before { 2.times { FactoryGirl.create(:article) } }
 
-      context "when an article exists" do
+      context "when an article exists with the title 'Dox is the next big thing'" do
         let!(:article) do
-          FactoryGirl.create(:article, title: title)
+          FactoryGirl.create(
+            :article,
+            title: 'Dox is the next big thing'
+          )
         end
 
-        context "with the title 'Dox is the next big thing'" do
-          let(:title) { 'Dox is the next big thing' }
-          it "returns the ID of that article" do
-            expect(subject).to include(article.id)
-          end
+        it "returns the ID of that article" do
+          expect(subject).to include(article.id)
+        end
+      end
+
+      context "when an article exists with the body 'Dox is the next big thing'" do
+        let!(:article) do
+          FactoryGirl.create(
+            :article,
+            body: 'Dox is the next big thing'
+          )
+        end
+
+        it "returns the ID of that article" do
+          expect(subject).to include(article.id)
         end
       end
     end
