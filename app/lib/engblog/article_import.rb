@@ -12,8 +12,13 @@ module Engblog
 
     def call
       read_rows do |row|
-        Author.create!(
+        author = Author.create!(
           name: row['author name']
+        )
+        Article.create!(
+          title: row['title'],
+          body: row['body'],
+          author: author
         )
       end
     end
