@@ -32,3 +32,7 @@ Page.where(
 
 HeroImage.where(name: "airplane.jpg").first_or_create
 HeroImage.where(name: "beach.jpg").first_or_create
+
+Engblog::ArticleImport.new(
+  filepath: Pathname.new('db/data/articles.csv')
+).call
