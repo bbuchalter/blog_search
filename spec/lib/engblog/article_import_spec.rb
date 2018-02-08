@@ -8,19 +8,20 @@ RSpec.describe Engblog::ArticleImport do
       ).call
     end
 
-    it "creates an author" do
+    it "creates an author for each row in the database" do
       expect { subject }.to change {
         Author.count
-      }.from(0).to(1)
+      }.from(0).to(2)
     end
 
-    it "creates an author with the provided attributes" do
+    it "creates authors with the provided attributes" do
       expect { subject }.to change {
-        Author.first.try!(:attributes).try!(:slice, "name")
-      }.from(nil).to(
-        {
-          "name" => "Author of Article 1"
-        }
+        Author.pluck(:name)
+      }.from([]).to(
+        [
+          'Author of Article 1',
+          'Author of Article 2'
+        ]
       )
     end
   end
