@@ -930,6 +930,9 @@ Lint/HandleExceptions:
   Description: "Don't suppress exception."
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions'
   Enabled: true
+  Exclude:
+    - bin/rake
+    - bin/rails
 
 Lint/LiteralInInterpolation:
   Description: 'Checks for literals used in interpolation.'
