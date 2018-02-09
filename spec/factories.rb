@@ -18,6 +18,14 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
+  factory :word_score do
+    association :article
+    word 'dox'
+    score 42
+  end
+end
+
+FactoryGirl.define do
   factory :page do
     title 'Default title'
     body 'Default body'
