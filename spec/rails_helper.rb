@@ -10,6 +10,7 @@ require 'spec_helper'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
 require 'rspec/rails'
+require 'config/database_cleaner'
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
