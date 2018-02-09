@@ -23,6 +23,7 @@ group :development, :test do
   gem 'rspec-benchmark'
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'bullet'
 end
 
 group :test do
