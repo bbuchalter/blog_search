@@ -3,6 +3,8 @@ class Article < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
 
   belongs_to :author
+  has_many :word_scores
+
   validates :author, :title, :body, presence: true
 
   scope :published, -> { where(published: true).order("created_at desc") }

@@ -1,6 +1,8 @@
 module Engblog
   # Given a query,
-  # return IDs of Articles which contain that query in the body or title.
+  # return an ActiveRecord::Relation of Articles
+  # which contain that query in the body or title,
+  # sorted by their WordScore.
   class ArticleSearch
     # @param query [String] The search term
     def initialize(query:)
@@ -8,23 +10,22 @@ module Engblog
     end
 
     def call
-      Article.where(title_match.or(body_match)).pluck(:id)
+      Article
+        .published
+        .includes(:author)
+        .select("articles.*, SUM(score) as sum_score")
+        .joins(:word_scores)
+        .where(WordScore.arel_table['word'].in(search_words))
+        .group(:article_id)
+        .order('sum_score DESC')
     end
 
     private
 
     attr_reader :query
 
-    def title_match
-      @title_match ||= Article.arel_table[:title].matches(wildcard_query)
-    end
-
-    def body_match
-      @body_match ||= Article.arel_table[:body].matches(wildcard_query)
-    end
-
-    def wildcard_query
-      @wildcard_query ||= "%#{query}%"
+    def search_words
+      TextToSearchWords.new(text: query).call
     end
   end
 end

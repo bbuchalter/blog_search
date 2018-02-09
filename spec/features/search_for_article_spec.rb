@@ -7,6 +7,9 @@ describe 'article search', :type => :feature do
       FactoryGirl.create :article, :unpublished, body: "Dox Loves Doctors"
       FactoryGirl.create :article, body: "Dox Loves Rails"
       FactoryGirl.create :article, body: "Dox Loves Perf"
+      Article.all.each do |article|
+        Engblog::UpdateArticleWordScores.new(article: article).call
+      end
     end
 
     it 'shows only published matches' do

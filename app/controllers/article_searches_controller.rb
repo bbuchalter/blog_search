@@ -5,10 +5,11 @@ class ArticleSearchesController < ApplicationController
       .includes(:author)
 
     if params[:query]
-      @articles = @articles.where(
-        id: Engblog::ArticleSearch.new(query: params[:query]).call
-      )
+      @articles = Engblog::ArticleSearch.new(
+        query: params[:query]
+      ).call.paginate(page: params[:page], per_page: 5)
+    else
+      redirect_to root_path
     end
-    @articles = @articles.paginate(page: params[:page], per_page: 5)
   end
 end
