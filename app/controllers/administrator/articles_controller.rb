@@ -25,7 +25,16 @@ class Administrator::ArticlesController < Administrator::BaseController
   end
 
   def update
-    if @article.update(permitted_params)
+    @article.assign_attributes(permitted_params)
+    trigger_word_score_job = Engblog::ShouldUpdateArticleWordScores.new(
+      article: @article
+    ).call
+
+    if @article.save
+      if trigger_word_score_job
+        UpdateArticleWordScoresJob.perform_later(article: @article)
+      end
+
       redirect_to @article, notice: 'Article was successfully updated.'
     else
       render :edit

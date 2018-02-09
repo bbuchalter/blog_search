@@ -36,10 +36,39 @@ describe Administrator::ArticlesController do
     expect(response.status).to eq 200
   end
 
-  it 'should update article' do
-    patch :update, params: { id: @article, article: { author_id: Author.first.id, body: @article.body, published: @article.published, title: @article.title } }
+  describe 'update' do
+    let(:title) { @article.title }
+    let(:body) { @article.body }
+    subject do
+      patch :update, params: { id: @article, article: { author_id: Author.first.id, body: body, published: @article.published, title: title } }
+    end
 
-    expect(response).to redirect_to(article_path(assigns(:article)))
+    it 'should update article' do
+      subject
+      expect(response).to redirect_to(article_path(assigns(:article)))
+    end
+
+    context 'when the title has changed' do
+      let(:title) { 'something new!' }
+
+      it 'should queue a job to update the article word scores' do
+        expect { subject }.to have_enqueued_job(UpdateArticleWordScoresJob)
+      end
+    end
+
+    context 'when the body has changed' do
+      let(:body) { 'something new!' }
+
+      it 'should queue a job to update the article word scores' do
+        expect { subject }.to have_enqueued_job(UpdateArticleWordScoresJob)
+      end
+    end
+
+    context 'when neither the title nor body has changed' do
+      it 'should not queue a job to update the article word scores' do
+        expect { subject }.not_to have_enqueued_job(UpdateArticleWordScoresJob)
+      end
+    end
   end
 
   it 'should destroy article' do
