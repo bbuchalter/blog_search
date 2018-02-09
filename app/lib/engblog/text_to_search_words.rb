@@ -8,5 +8,16 @@ module Engblog
   # As time goes on we can pipeline in more parsing and sanitizing of text as
   # needed.
   class TextToSearchWords
+    def initialize(text:)
+      @text = text
+    end
+
+    def call
+      text.split(" ")
+    end
+
+    private
+
+    attr_reader :text
   end
 end
