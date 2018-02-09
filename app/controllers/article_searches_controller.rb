@@ -6,7 +6,6 @@ class ArticleSearchesController < ApplicationController
         id: Engblog::ArticleSearch.new(query: params[:query]).call
       )
     end
-
-    render nothing: true
+    @articles = @articles.paginate(page: params[:page], per_page: 5)
   end
 end
