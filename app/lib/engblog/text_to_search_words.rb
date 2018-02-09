@@ -14,9 +14,10 @@ module Engblog
     end
 
     def call
-      split_on_whitespace
-      strip_non_alpha
-      remove_blank_string
+      text.split(" ").each do |token|
+        search_word = strip_non_alpha(token)
+        search_words << search_word unless search_word == ""
+      end
       search_words
     end
 
@@ -25,20 +26,8 @@ module Engblog
     attr_reader :text
     attr_accessor :search_words
 
-    def split_on_whitespace
-      self.search_words = text.split(" ")
-    end
-
-    def strip_non_alpha
-      search_words.each do |search_word|
-        search_word.gsub!(/[^a-z]/, '')
-      end
-    end
-
-    def remove_blank_string
-      search_words.delete_if do |search_word|
-        search_word == ""
-      end
+    def strip_non_alpha(token)
+      token.gsub(/[^a-z]/, '')
     end
   end
 end
