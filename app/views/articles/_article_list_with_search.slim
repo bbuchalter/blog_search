@@ -23,10 +23,6 @@
             = text_field_tag :query, params[:query]
             = button_tag :search, type: :submit
 
-          div.load.hide
-
-          .results.box.hide
-            | No Results
 .row
   .section
     = will_paginate articles
