@@ -17,35 +17,4 @@
 
 = render 'layouts/hero_asset'
 
-.row
-  .section
-    .col-3-4
-      - @articles.each do |article|
-        .article
-          - if img = article.hero_image_name.presence
-            = link_to article_path(article) do
-              - img = "heroes/#{img}"
-              .hero-secondary style='background-image: url("#{asset_path(img)}")'
-                h1 = article.title
-          p.article-body
-            = markdown(article.body || 'No content')
-          p.meta
-            = article.created_at.strftime("%b %d, %Y")
-            span.stick<> |
-            = article.author.name
-        hr
-    .col-1-4
-      .search
-        | Search Articles
-        = form_for "", url: '#' do |form|
-          p
-            = form.text_field :title
-            = form.submit :search
-
-          div.load.hide
-
-          .results.box.hide
-            | No Results
-.row
-  .section
-    = will_paginate
+= render 'article_list_with_search', articles: @articles

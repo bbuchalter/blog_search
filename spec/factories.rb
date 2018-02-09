@@ -4,6 +4,10 @@ FactoryGirl.define do
     body 'Default body'
     published true
     association :author
+
+    trait :unpublished do
+      published false
+    end
   end
 end
 
