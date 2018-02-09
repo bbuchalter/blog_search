@@ -15,7 +15,7 @@ module Engblog
         author = Author.create!(
           name: row['author name']
         )
-        Article.create!(
+        article = Article.create!(
           title: row['title'],
           body: row['body'],
           author: author,
@@ -24,6 +24,8 @@ module Engblog
         HeroImage.create!(
           name: row['hero image']
         )
+
+        UpdateArticleWordScoresJob.perform_later(article: article)
       end
     end
 

@@ -64,5 +64,9 @@ RSpec.describe Engblog::ArticleImport do
         Article.first.try!(:author) == Author.first && !Author.first.nil?
       }.from(false).to(true)
     end
+
+    it "enqueues a word score job for each record" do
+      expect { subject }.to have_enqueued_job(UpdateArticleWordScoresJob).twice
+    end
   end
 end
