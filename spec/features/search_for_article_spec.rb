@@ -18,5 +18,15 @@ describe 'article search', :type => :feature do
       expect(page.all(".article").count).to eq 1
       expect(page.find(".article").text).to include "Dox Loves Rails"
     end
+
+    it 'retains your search query' do
+      visit "/"
+      within ".search" do
+        fill_in "query", with: "Dox"
+        click_button "search"
+      end
+
+      expect(page.find("#query").value).to eq "Dox"
+    end
   end
 end

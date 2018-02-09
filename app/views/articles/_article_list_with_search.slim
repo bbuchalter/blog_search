@@ -20,7 +20,7 @@
         | Search Articles
         = form_tag article_search_path
           p
-            = text_field_tag :query
+            = text_field_tag :query, params[:query]
             = button_tag :search, type: :submit
 
           div.load.hide
