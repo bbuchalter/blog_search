@@ -10,14 +10,35 @@ module Engblog
   class TextToSearchWords
     def initialize(text:)
       @text = text
+      @search_words = []
     end
 
     def call
-      text.split(" ")
+      split_on_whitespace
+      strip_non_alpha
+      remove_blank_string
+      search_words
     end
 
     private
 
     attr_reader :text
+    attr_accessor :search_words
+
+    def split_on_whitespace
+      self.search_words = text.split(" ")
+    end
+
+    def strip_non_alpha
+      search_words.each do |search_word|
+        search_word.gsub!(/[^a-z]/, '')
+      end
+    end
+
+    def remove_blank_string
+      search_words.delete_if do |search_word|
+        search_word == ""
+      end
+    end
   end
 end
