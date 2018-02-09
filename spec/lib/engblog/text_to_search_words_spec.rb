@@ -27,4 +27,12 @@ RSpec.describe Engblog::TextToSearchWords do
       expect(subject).to eq %w(dox my friend)
     end
   end
+
+  context "when text is 'DoX" do
+    let(:text) { 'DoX' }
+
+    it "downcases" do
+      expect(subject).to eq %w(dox)
+    end
+  end
 end

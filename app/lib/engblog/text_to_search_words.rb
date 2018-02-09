@@ -15,7 +15,8 @@ module Engblog
 
     def call
       text.split(" ").each do |token|
-        search_word = strip_non_alpha(token)
+        search_word = token.downcase
+        search_word = strip_non_alpha(search_word)
         search_words << search_word unless search_word == ""
       end
       search_words
