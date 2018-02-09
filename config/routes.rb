@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get :search_suggestions
     end
   end
-  resource :article_search, only: [:create]
+  resource :article_search, only: [:show]
 
   resources :authors, only: [:index]
 

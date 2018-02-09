@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ArticleSearchesController do
-  describe 'POST create' do
+  describe 'GET show' do
     context 'when an article exists' do
       let!(:article) do
         FactoryGirl.create(:article)
@@ -12,13 +12,13 @@ describe ArticleSearchesController do
 
       context 'when no query is provided' do
         it 'redirects to homepage' do
-          post :create
+          get :show
           expect(response).to redirect_to("/")
         end
       end
 
       context 'when query is provided' do
-        subject { post :create, params: { query: 'Dox' } }
+        subject { get :show, params: { query: 'Dox' } }
 
         context 'when a matching article exists' do
           let!(:dox_article) { FactoryGirl.create(:article, title: 'Dox') }

@@ -18,7 +18,7 @@
     .col-1-4
       .search
         | Search Articles
-        = form_tag article_search_path
+        = form_tag article_search_path, method: :get
           p
             = text_field_tag :query, params[:query]
             = button_tag :search, type: :submit

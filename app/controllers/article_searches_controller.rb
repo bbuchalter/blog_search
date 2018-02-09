@@ -1,5 +1,5 @@
 class ArticleSearchesController < ApplicationController
-  def create
+  def show
     @articles = Article
       .published
       .includes(:author)
