@@ -16,12 +16,19 @@ describe Administrator::ArticlesController do
     expect(response.status).to eq 200
   end
 
-  it 'should create article' do
-    expect do
+  describe 'create' do
+    subject do
       post :create, params: { article: { author_id: Author.first.id, body: @article.body, published: @article.published, title: @article.title } }
-    end.to change { Article.count }.by(1)
+    end
 
-    expect(response).to redirect_to(article_path(assigns(:article)))
+    it 'should create article' do
+      expect { subject }.to change { Article.count }.by(1)
+      expect(response).to redirect_to(article_path(assigns(:article)))
+    end
+
+    it 'should queue a job to update the article word scores' do
+      expect { subject }.to have_enqueued_job(UpdateArticleWordScoresJob)
+    end
   end
 
   it 'should get edit' do

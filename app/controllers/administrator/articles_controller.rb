@@ -17,6 +17,7 @@ class Administrator::ArticlesController < Administrator::BaseController
     @article = Article.new(permitted_params)
 
     if @article.save
+      UpdateArticleWordScoresJob.perform_later(article: @article)
       redirect_to @article, notice: 'Article was successfully created.'
     else
       render :new
