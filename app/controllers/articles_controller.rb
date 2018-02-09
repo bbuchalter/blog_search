@@ -3,8 +3,11 @@ class ArticlesController < ApplicationController
 
   def index
     @featured_article = Article.featured.limit(1).first
-    @articles = Article.published.where.not(id: @featured_article).
-      paginate(page: params[:page], per_page: 5)
+    @articles = Article
+      .published
+      .where.not(id: @featured_article)
+      .includes(:author)
+      .paginate(page: params[:page], per_page: 5)
   end
 
   def show

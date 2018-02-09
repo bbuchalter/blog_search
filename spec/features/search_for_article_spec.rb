@@ -6,6 +6,7 @@ describe 'article search', :type => :feature do
       FactoryGirl.create :article, body: "This article is irrelvant"
       FactoryGirl.create :article, :unpublished, body: "Dox Loves Doctors"
       FactoryGirl.create :article, body: "Dox Loves Rails"
+      FactoryGirl.create :article, body: "Dox Loves Perf"
     end
 
     it 'shows only published matches' do
@@ -15,8 +16,8 @@ describe 'article search', :type => :feature do
         click_button "search"
       end
 
-      expect(page.all(".article").count).to eq 1
-      expect(page.find(".article").text).to include "Dox Loves Rails"
+      expect(page.all(".article").count).to eq 2
+      expect(page.first(".article").text).to include "Dox Loves Rails"
     end
 
     it 'retains your search query' do
