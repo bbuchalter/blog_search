@@ -11,11 +11,11 @@ module Engblog
 
     def call
       Article
-        .published
         .includes(:author)
         .select("articles.*, SUM(score) as sum_score")
         .joins(:word_scores)
         .where(WordScore.arel_table['word'].in(search_words))
+        .where(Article.arel_table['published'].eq(true))
         .group(:article_id)
         .order('sum_score DESC')
     end
