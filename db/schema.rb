@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(version: 20180209091616) do
     t.integer  "score",      null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["article_id", "word"], name: "index_word_scores_on_article_id_and_word", unique: true, using: :btree
     t.index ["article_id"], name: "index_word_scores_on_article_id", using: :btree
+    t.index ["word", "article_id"], name: "index_word_scores_on_word_and_article_id", unique: true, using: :btree
   end
 
   add_foreign_key "articles", "authors"

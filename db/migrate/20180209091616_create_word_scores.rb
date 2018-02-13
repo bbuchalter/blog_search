@@ -7,7 +7,7 @@ class CreateWordScores < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    add_index :word_scores, [:article_id, :word], unique: true
+    add_index :word_scores, [:word, :article_id], unique: true
     add_foreign_key :word_scores, :articles
   end
 end
