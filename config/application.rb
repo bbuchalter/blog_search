@@ -22,5 +22,7 @@ module Engblog
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.public_file_server.enabled = true
+
+    config.active_job.queue_adapter = :resque
   end
 end
