@@ -1,9 +1,5 @@
 class ArticleSearchesController < ApplicationController
   def show
-    @articles = Article
-      .published
-      .includes(:author)
-
     if params[:query]
       @articles = Engblog::ArticleSearch.new(
         query: params[:query]
