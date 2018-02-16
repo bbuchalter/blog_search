@@ -23,7 +23,7 @@ describe Engblog::ArticleSearch do
           )
         end
 
-       context "when a new article exists with the body 'Dox is great'" do
+        context "when a new article exists with the body 'Dox is great'" do
           let!(:dox_in_body_article) do
             FactoryGirl.create(
               :article,
