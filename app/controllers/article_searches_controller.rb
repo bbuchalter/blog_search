@@ -1,9 +1,17 @@
 class ArticleSearchesController < ApplicationController
   def show
     if params[:query]
-      @articles = Engblog::ArticleSearch.new(
-        query: params[:query]
-      ).call.paginate(page: params[:page], per_page: 5)
+      page = params[:page] || 1
+
+      search = Engblog::CachedArticleSearch.new(
+        query: params[:query],
+        page: page,
+        per_page: 5
+      )
+
+      @articles = search.results # TODO: eliminate N+1 query on author
+      @results_for_pagination = search.results_for_pagination # OPTIMIZE: slow query
+      # TODO: async cache warm for next page of results
     else
       redirect_to root_path
     end

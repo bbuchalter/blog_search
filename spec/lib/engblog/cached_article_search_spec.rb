@@ -1,53 +1,71 @@
 require 'rails_helper'
 
 RSpec.describe Engblog::CachedArticleSearch do
-  context "given a cache key of 'key1'" do
-    let(:cache_key) { 'key1' }
+  describe "#results" do
+    subject do
+      described_class.new(
+        query: query,
+        page: page,
+        per_page: per_page
+      ).results
+    end
 
-    context "and search results for that key" do
-      let(:low_score_article) { FactoryGirl.create :article }
-      let(:high_score_article) { FactoryGirl.create :article }
-      let(:search_results) do
-        [
-          double('search_result_1', article_id: low_score_article.id, score: 1),
-          double('search_result_2', article_id: high_score_article.id, score: 2),
-        ]
-      end
+    context "given a query 'dox'" do
+      let(:query) { 'dox' }
 
-      context "the first time it is called" do
-        let(:subject) do
-          described_class.new(
-            cache_key: cache_key,
-            search_results: search_results
-          ).call
-        end
+      context "given an article with the title 'dox'" do
+        let!(:title_match_article) { FactoryGirl.create :article, title: 'dox' }
 
-        it "records the search results for the key" do
-          expect { subject }.to change {
-            CachedArticleSearchScore.count
-          }.from(0).to(2)
-        end
+        context "given an article with the body 'dox'" do
+          let!(:body_match_article) { FactoryGirl.create :article, body: 'dox' }
 
-        it "returns the sorted search results" do
-          expect(subject).to eq([high_score_article, low_score_article])
-        end
+          context "given those articles have been WordScored" do
 
-        context "the second time it is called" do
-          before do
-            described_class.new(
-              cache_key: cache_key,
-              search_results: search_results
-            ).call
-          end
+            context "given we ask for the first page of results" do
+              let(:page) { 1 }
 
-          it "does not record existing search results" do
-            expect { subject }.to_not change {
-              CachedArticleSearchScore.count
-            }.from(2)
-          end
+              context "given we ask for one article per page" do
+                let(:per_page) { 1 }
 
-          it "returns the sorted search results" do
-            expect(subject).to eq([high_score_article, low_score_article])
+                context "given the articles word scores are calculated" do
+                  before do
+                    Article.all.each do |article|
+                      Engblog::UpdateArticleWordScores.new(article: article).call
+                    end
+                  end
+
+                  it "returns the articles for that page" do
+                    expect(subject).to eq([title_match_article])
+                  end
+
+                  it "records the search results for that page" do
+                    expect { subject }.to change {
+                      CachedArticleSearchScore.count
+                    }.from(0).to(1)
+                  end
+
+                  context "when it is called again with the same query and page" do
+                    before do
+                      described_class.new(
+                        query: query,
+                        page: page,
+                        per_page: per_page
+                      ).results
+                    end
+
+                    it "returns the same results" do
+                      expect(subject).to eq([title_match_article])
+                    end
+
+                    it "does not records any new results" do
+                      expect { subject }.to_not change {
+                        CachedArticleSearchScore.count
+                      }.from(1)
+                    end
+                  end
+                end
+              end
+            end
           end
         end
       end

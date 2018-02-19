@@ -1,25 +1,32 @@
 module Engblog
   class CachedArticleSearch
-    def initialize(cache_key:, search_results:)
-      @cache_key = cache_key
-      @search_results = search_results
+    def initialize(query:, page:, per_page:)
+      @page = page
+      @per_page = per_page
+      @cache_key = ArticleSearchCacheKey.new(query: query, page: page).call
+      @search_query = ArticleSearch.new(query: query).call if query
+      @search_results = search_query.paginate(page: page, per_page: per_page)
     end
 
-    def call
+    def results
       store_search_results unless search_results_cached?
       find_articles_by_key_and_sort_by_score
     end
 
+    def results_for_pagination
+      search_query.paginate(page: page, per_page: per_page)
+    end
+
     private
 
-    attr_reader :cache_key, :search_results
+    attr_reader :cache_key, :search_results, :search_query, :page, :per_page
 
     def store_search_results
       search_results.each do |result|
         CachedArticleSearchScore.create!(
           article_search_cache_key: cache_key,
-          article_id: result.article_id,
-          score: result.score
+          article_id: result.id,
+          score: result["sum_score"]
         )
       end
     end
