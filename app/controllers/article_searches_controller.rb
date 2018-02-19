@@ -10,7 +10,7 @@ class ArticleSearchesController < ApplicationController
       )
 
       @articles = search.results.includes(:author)
-      @results_for_pagination = search.results_for_pagination # OPTIMIZE: slow query
+      @results_for_pagination = search.pagination
       # OPTIMIZE: async cache warm for next page of results
     else
       redirect_to root_path
