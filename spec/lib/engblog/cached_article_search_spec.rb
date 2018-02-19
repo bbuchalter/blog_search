@@ -26,7 +26,7 @@ RSpec.describe Engblog::CachedArticleSearch do
                 end
 
                 describe "#pagination" do
-                  subject do
+                  def subject
                     described_class.new(
                       query: query,
                       page: page,
@@ -60,6 +60,31 @@ RSpec.describe Engblog::CachedArticleSearch do
                     end
 
                     it "returns the same results" do
+                      expect(subject).to have_attributes(
+                        page: 1,
+                        current_page: 1,
+                        per_page: 1,
+                        total_pages: 2
+                      )
+                    end
+
+                    it "does not records any new page counts" do
+                      expect { subject }.to_not change {
+                        CachedArticleSearchPageCount.count
+                      }.from(1)
+                    end
+                  end
+
+                  context "when it is called again with a different page" do
+                    before do
+                      described_class.new(
+                        query: query,
+                        page: 2,
+                        per_page: per_page
+                      ).pagination
+                    end
+
+                    it "returns the same total number of pages" do
                       expect(subject).to have_attributes(
                         page: 1,
                         current_page: 1,

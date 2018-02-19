@@ -1,10 +1,11 @@
 module Engblog
   class CachedArticleSearch
     def initialize(query:, page:, per_page:)
+      @query = query
       @page = page
       @per_page = per_page
       @cache_key = ArticleSearchCacheKey.new(query: query, page: page, per_page: per_page).call
-      @search_query = ArticleSearch.new(query: query).call if query
+      @search_query = ArticleSearch.new(query: query).call
       @search_results = search_query.paginate(page: page, per_page: per_page)
     end
 
@@ -15,16 +16,15 @@ module Engblog
 
     def pagination
       CachedPagination.new(
-        search_query: search_query,
+        query: query,
         page: page,
-        per_page: per_page,
-        cache_key: cache_key
+        per_page: per_page
       )
     end
 
     private
 
-    attr_reader :cache_key, :search_results, :search_query, :page, :per_page
+    attr_reader :cache_key, :search_results, :search_query, :page, :per_page, :query
 
     def store_search_results
       search_results.each do |result|
@@ -52,18 +52,18 @@ module Engblog
     class CachedPagination
       attr_reader :page, :per_page, :total_pages, :current_page
 
-      def initialize(search_query:, page:, per_page:, cache_key:)
+      def initialize(query:, page:, per_page:)
         @page = page.to_i
         @current_page = @page
         @per_page = per_page.to_i
-        @cache_key = cache_key
-        @search_query = search_query
+        @cache_key = ArticleSearchCacheKey.new(query: query, page: 1, per_page: per_page).call
+        @search_query = ArticleSearch.new(query: query).call
         @total_pages = cached_page_count
       end
 
       private
 
-      attr_reader :cache_key, :search_query
+      attr_reader :query, :cache_key, :search_query
 
       def cached_page_count
         store_page_count unless page_count_cached?

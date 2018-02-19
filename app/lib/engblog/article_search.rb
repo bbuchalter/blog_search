@@ -6,6 +6,7 @@ module Engblog
   class ArticleSearch
     # @param query [String] The search term
     def initialize(query:)
+      raise ArgumentError("query cannot be nil") unless query
       @query = query
     end
 
