@@ -9,27 +9,30 @@ FactoryGirl.define do
       published false
     end
   end
-end
 
-FactoryGirl.define do
   factory :author do
     name 'McFly'
   end
-end
 
-FactoryGirl.define do
+  factory :cached_article_page_count do
+    article_search_cache_key "MyString"
+    page_count 1
+  end
   factory :word_score do
     association :article
     word 'dox'
     score 42
   end
-end
 
-FactoryGirl.define do
   factory :page do
     title 'Default title'
     body 'Default body'
     published true
     association :author
+  end
+
+  factory :cached_article_search_page_count do
+    article_search_cache_key "MyString"
+    page_count 1
   end
 end

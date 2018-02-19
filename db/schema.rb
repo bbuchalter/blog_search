@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180219100637) do
+ActiveRecord::Schema.define(version: 20180219182435) do
 
   create_table "articles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "title"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 20180219100637) do
     t.datetime "updated_at",                              null: false
     t.string   "slug"
     t.index ["slug"], name: "index_authors_on_slug", unique: true, using: :btree
+  end
+
+  create_table "cached_article_search_page_counts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "article_search_cache_key", null: false
+    t.integer  "page_count",               null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["article_search_cache_key"], name: "cached_article_search_page_counts_cache_key", using: :btree
   end
 
   create_table "cached_article_search_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
