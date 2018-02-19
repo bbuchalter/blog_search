@@ -21,8 +21,8 @@ RSpec.describe Engblog::ArticleSearchCacheKey do
         end
 
         context "when a relevant record is mutated" do
-          it "changes the cache key" do
-            expect { sleep 1; WordScore.find_by(word: 'search').update!(score: 32) }.to change {
+          it "DOES NOT change the cache key" do
+            expect { sleep 1; WordScore.find_by(word: 'search').update!(score: 32) }.to_not change {
               described_class.new(
                 page: page,
                 query: query

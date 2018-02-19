@@ -11,7 +11,6 @@ module Engblog
         page,
         count_of_word_scores_for_search_words, # OPTIMIZE: 3 queries should be 1
         max_id_of_word_scores_for_search_words,
-        max_updated_at_of_word_scores_for_search_words.to_i # TODO: support microsecond precision
       ].flatten.join('-')
     end
 
@@ -29,10 +28,6 @@ module Engblog
 
     def max_id_of_word_scores_for_search_words
       word_scores_for_search_words.maximum(:id)
-    end
-
-    def max_updated_at_of_word_scores_for_search_words
-      word_scores_for_search_words.maximum(:updated_at)
     end
 
     def word_scores_for_search_words
