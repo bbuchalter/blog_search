@@ -4,6 +4,7 @@ class Article < ActiveRecord::Base
 
   belongs_to :author
   has_many :word_scores
+  has_many :cached_article_search_scores
 
   validates :author, :title, :body, presence: true
 
