@@ -3,7 +3,7 @@ module Engblog
     def initialize(query:, page:, per_page:)
       @page = page
       @per_page = per_page
-      @cache_key = ArticleSearchCacheKey.new(query: query, page: page).call
+      @cache_key = ArticleSearchCacheKey.new(query: query, page: page, per_page: per_page).call
       @search_query = ArticleSearch.new(query: query).call if query
       @search_results = search_query.paginate(page: page, per_page: per_page)
     end
