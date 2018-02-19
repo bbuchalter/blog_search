@@ -9,9 +9,9 @@ class ArticleSearchesController < ApplicationController
         per_page: 5
       )
 
-      @articles = search.results # TODO: eliminate N+1 query on author
+      @articles = search.results # OPTIMIZE: eliminate N+1 query on author
       @results_for_pagination = search.results_for_pagination # OPTIMIZE: slow query
-      # TODO: async cache warm for next page of results
+      # OPTIMIZE: async cache warm for next page of results
     else
       redirect_to root_path
     end
