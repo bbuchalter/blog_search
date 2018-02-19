@@ -1,7 +1,7 @@
 module Engblog
   class ArticleSearchCacheKey
     def initialize(page:, query:)
-      @page = page
+      @page = page # TODO: support pages of different length
       @query = query
     end
 
