@@ -9,7 +9,7 @@ class ArticleSearchesController < ApplicationController
         per_page: 5
       )
 
-      @articles = search.results # OPTIMIZE: eliminate N+1 query on author
+      @articles = search.results.includes(:author)
       @results_for_pagination = search.results_for_pagination # OPTIMIZE: slow query
       # OPTIMIZE: async cache warm for next page of results
     else

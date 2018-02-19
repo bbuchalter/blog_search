@@ -11,7 +11,6 @@ module Engblog
 
     def call
       Article
-        .includes(:author)
         .select("articles.*, SUM(score) as sum_score")
         .joins(:word_scores)
         .where(WordScore.arel_table['word'].in(search_words))
