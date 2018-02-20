@@ -17,7 +17,7 @@ gem 'redcarpet'
 gem 'pygments.rb'
 gem 'faker'
 gem 'pry'
-gem 'resque'
+gem 'resque', github: 'bbuchalter/resque', branch: 'fix_redis_connect'
 
 
 group :development, :test do
