@@ -18,18 +18,18 @@ describe ArticleSearchesController do
       end
 
       context 'when query is provided' do
-        subject { get :show, params: { query: 'Dox' } }
+        subject { get :show, params: { query: 'Rails' } }
 
         context 'when a matching article exists' do
-          let!(:dox_article) { FactoryGirl.create(:article, title: 'Dox') }
+          let!(:rails_article) { FactoryGirl.create(:article, title: 'Rails') }
           before do
-            Engblog::UpdateArticleWordScores.new(article: dox_article).call
+            Engblog::UpdateArticleWordScores.new(article: rails_article).call
           end
 
           it 'constrains the articles assigned to only matches' do
             subject
             expect(response.status).to eq(200)
-            expect(assigns(:articles)).to eq [dox_article]
+            expect(assigns(:articles)).to eq [rails_article]
           end
         end
 
@@ -38,7 +38,7 @@ describe ArticleSearchesController do
             unpublished_article = FactoryGirl.create(
               :article,
               :unpublished,
-              title: 'Dox'
+              title: 'Rails'
             )
             Engblog::UpdateArticleWordScores.new(article: unpublished_article).call
           end

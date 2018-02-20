@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Engblog::CachedArticleSearch do
-  context "given a query 'dox'" do
-    let(:query) { 'dox' }
+  context "given a query 'ruby'" do
+    let(:query) { 'ruby' }
 
-    context "given an article with the title 'dox'" do
-      let!(:title_match_article) { FactoryGirl.create :article, title: 'dox' }
+    context "given an article with the title 'ruby'" do
+      let!(:title_match_article) { FactoryGirl.create :article, title: 'ruby' }
 
-      context "given an article with the body 'dox'" do
-        let!(:body_match_article) { FactoryGirl.create :article, body: 'dox' }
+      context "given an article with the body 'ruby'" do
+        let!(:body_match_article) { FactoryGirl.create :article, body: 'ruby' }
 
         context "given those articles have been WordScored" do
 

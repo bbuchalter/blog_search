@@ -5,10 +5,10 @@ describe 'article search', :type => :feature do
     before do
       # Should not appear
       FactoryGirl.create :article, body: "This article is irrelvant" # because no match
-      FactoryGirl.create :article, :unpublished, body: "Dox Loves Doctors" # because unpublished
+      FactoryGirl.create :article, :unpublished, body: "Rails Loves Ruby" # because unpublished
 
       # Should appear
-      6.times{ FactoryGirl.create :article, body: "Dox Loves Rails" }
+      6.times{ FactoryGirl.create :article, body: "Ruby Loves Rails" }
 
       # Update Word Scores for search
       Article.all.each do |article|
@@ -17,7 +17,7 @@ describe 'article search', :type => :feature do
     end
 
     it 'shows only published matches on all pages' do
-      search_for "Dox"
+      search_for "Ruby"
 
       expect(page.all(".article").count).to eq 5
       expect(page).not_to have_text "irrelevant"
@@ -31,8 +31,8 @@ describe 'article search', :type => :feature do
     end
 
     it 'retains your search query' do
-      search_for "Dox"
-      expect(page.find("#query").value).to eq "Dox"
+      search_for "Ruby"
+      expect(page.find("#query").value).to eq "Ruby"
     end
 
     def search_for(query)

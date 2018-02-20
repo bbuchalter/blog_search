@@ -6,7 +6,7 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name='og:title' content="#{content_for(:title)}"
     meta name='og:image' content="#{content_for(:hero_image)}"
-    title Doximity Engineering Blog
+    title Demo Blog
     - if content_for?(:meta)
       = yield :meta
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100,200,400', media: 'all'
@@ -16,19 +16,11 @@ html
     - if content_for?(:style)
       = yield :style
     = javascript_include_tag 'application'
-    = javascript_include_tag 'share-button.min'
     = csrf_meta_tags
-    = favicon_link_tag
-    = favicon_link_tag "apple-touch-icon-60x60.png", rel: "apple-touch-icon", type: "image/png", sizes: "60x60"
-    = favicon_link_tag "apple-touch-icon-76x76.png", rel: "apple-touch-icon", type: "image/png", sizes: "76x76"
-    = favicon_link_tag "apple-touch-icon-120x120.png", rel: "apple-touch-icon", type: "image/png", sizes: "120x120"
-    = favicon_link_tag "apple-touch-icon-152x152.png", rel: "apple-touch-icon", type: "image/png", sizes: "152x152"
 
     = yield :head
   body class="#{yield(:body_class)}" id="#{controller_name}_#{action_name}"
     .wrap
       = render 'layouts/notice'
-      = render 'layouts/header'
       = render 'layouts/contents'
-      = render 'layouts/footer'
     = render 'layouts/google_analytics'

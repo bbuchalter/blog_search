@@ -8,26 +8,26 @@ describe Engblog::ArticleSearch do
     described_class.new(query: query).call
   end
 
-  context "when searching 'dox'" do
-    let(:query) { 'dox' }
+  context "when searching 'ruby'" do
+    let(:query) { 'ruby' }
 
     context "when many articles exist" do
       before { 2.times { FactoryGirl.create(:article) } }
 
-      context "when an old article exists with the title 'Dox is the next big thing'" do
-        let!(:dox_in_title_article) do
+      context "when an old article exists with the title 'Ruby is the next big thing'" do
+        let!(:ruby_in_title_article) do
           FactoryGirl.create(
             :article,
-            title: 'Dox is the next big thing',
+            title: 'Ruby is the next big thing',
             created_at: 1.year.ago
           )
         end
 
-        context "when a new article exists with the body 'Dox is great'" do
-          let!(:dox_in_body_article) do
+        context "when a new article exists with the body 'Ruby is great'" do
+          let!(:ruby_in_body_article) do
             FactoryGirl.create(
               :article,
-              body: 'Dox is great',
+              body: 'Ruby is great',
             )
           end
 
@@ -37,16 +37,16 @@ describe Engblog::ArticleSearch do
                 { article.id => article["sum_score"] }
               end
             ).to eq [
-              { dox_in_title_article.id => 10 },
-              { dox_in_body_article.id => 1 }
+              { ruby_in_title_article.id => 10 },
+              { ruby_in_body_article.id => 1 }
             ]
           end
 
-          context "when an article exists with the body 'Dox' 200 times" do
-            let!(:dox_in_body_article) do
+          context "when an article exists with the body 'Ruby' 200 times" do
+            let!(:ruby_in_body_article) do
               FactoryGirl.create(
                 :article,
-                body: 'Dox '* 200
+                body: 'Ruby '* 200
               )
             end
 
@@ -56,8 +56,8 @@ describe Engblog::ArticleSearch do
                   { article.id => article["sum_score"] }
                 end
               ).to eq([
-                  { dox_in_body_article.id => 200 },
-                  { dox_in_title_article.id => 10 }
+                  { ruby_in_body_article.id => 200 },
+                  { ruby_in_title_article.id => 10 }
               ])
             end
           end

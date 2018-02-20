@@ -20,7 +20,7 @@ FactoryGirl.define do
   end
   factory :word_score do
     association :article
-    word 'dox'
+    word 'rails'
     score 42
   end
 
