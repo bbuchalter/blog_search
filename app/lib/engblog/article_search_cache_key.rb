@@ -11,7 +11,7 @@ module Engblog
         search_words.sort,
         page,
         per_page,
-        count_of_word_scores_for_search_words, # OPTIMIZE: 3 queries should be 1
+        count_of_word_scores_for_search_words,
         max_id_of_word_scores_for_search_words,
       ].flatten.join('-')
     end
@@ -25,15 +25,18 @@ module Engblog
     end
 
     def count_of_word_scores_for_search_words
-      word_scores_for_search_words.count
+      word_scores_for_search_words["count"]
     end
 
     def max_id_of_word_scores_for_search_words
-      word_scores_for_search_words.maximum(:id)
+      word_scores_for_search_words["max_id"]
     end
 
     def word_scores_for_search_words
-      @word_scores_for_search_words ||= WordScore.where(word: search_words)
+      @word_scores_for_search_words ||= WordScore
+        .select("MAX(id) as max_id, COUNT(*) as count")
+        .where(word: search_words)
+        .first
     end
   end
 end
